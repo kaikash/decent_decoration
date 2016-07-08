@@ -10,21 +10,17 @@ require 'active_model'
 module Rails
   class App
     def env_config; {} end
+
     def routes
-      return @routes if defined?(@routes)
-      @routes = ActionDispatch::Routing::RouteSet.new
-      @routes.draw do
-        get '/conferences/new' => "conferences#new"
-        get '/conference/(:id)' => "conferences#show"
-        get '/attendees/new' => "attendees#new"
-        get '/attendee/(:id)' => "attendees#show"
+      @routes ||= ActionDispatch::Routing::RouteSet.new.tap do |routes|
+        routes.draw do
+          resources :conferences, only: %i(show)
+          resources :attendees, only: %i(show)
+        end
       end
-      @routes
-    end
-    def call(*args)
-      routes.call(*args)
     end
   end
+
   def self.application
     @app ||= App.new
   end
