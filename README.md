@@ -4,14 +4,14 @@
 [![Coverage Status](https://coveralls.io/repos/netguru/decent_decoration/badge.png?branch=master)](https://coveralls.io/r/netguru/decent_decoration)
 [![Gem Version](https://badge.fury.io/rb/decent_decoration.png)](http://badge.fury.io/rb/decent_decoration)
 
-decent_decoration allows you to use excellent [decent_exposure][decent_exposure] gem with decorators.
+decent_decoration allows you to use excellent [decent_exposure 3.0][decent_exposure] gem with decorators.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```
-gem 'decent_decoration'
+gem 'decent_decoration', '~> 3.0'
 ```
 
 And then execute:
@@ -67,7 +67,7 @@ decent_decoration supports most of the awesome [decent_exposure api][decent_expo
 # app/controllers/attendees_controller.rb
 class AttendeesController < ApplicationController
   expose_decorated(:conference)
-  expose_decorated(:attendees, ancestor: :conference)
+  expose_decorated(:attendees, scope: :conference)
 end
 ```
 
