@@ -11,7 +11,7 @@ decent_decoration allows you to use excellent [decent_exposure 3.0][decent_expos
 Add this line to your application's Gemfile:
 
 ```
-gem 'decent_decoration', '~> 3.0'
+gem 'decent_decoration', '~> 1.0'
 ```
 
 And then execute:
