@@ -13,9 +13,7 @@ module DecentDecoration
     end
 
     def options
-      original_options.except(:decorator, :collection).tap do |h|
-        h[:model] ||= name
-      end
+      original_options.except(:decorator, :collection)
     end
 
     def decorator_class
@@ -35,7 +33,7 @@ module DecentDecoration
     private
 
     def infer_decorator_class
-      "#{options[:model].to_s.classify}Decorator".constantize
+      "#{name.to_s.classify}Decorator".constantize
     end
 
     def decorate_collection?
@@ -60,15 +58,16 @@ module DecentDecoration
   end
 
   module ControllerMethods
-    def expose_decorated(name, options = {}, &block)
+    def expose_decorated(name, *args, &block)
+      options    = args.extract_options!
       decoration = Decoration.new(name, options)
 
       decorator_class  = decoration.decorator_class
       decorate_method  = decoration.decorate_method
-      decorated_name = decoration.decorated_name
+      decorated_name   = decoration.decorated_name
       options          = decoration.options
 
-      expose(name, options, &block)
+      expose(name, *args, options, &block)
       expose(decorated_name) { decorator_class.public_send(decorate_method, public_send(name)) }
 
       helper Module.new do
