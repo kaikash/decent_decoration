@@ -1,9 +1,10 @@
 module DecentDecoration
   class Decoration
-    attr_accessor :name, :original_options
+    attr_accessor :name, :original_options, :object
     private :original_options
 
-    def initialize(name, options = {})
+    def initialize(name, options = {}, object)
+      self.object = object
       self.name = name
       self.original_options = options
     end
@@ -33,7 +34,8 @@ module DecentDecoration
     private
 
     def infer_decorator_class
-      "#{name.to_s.classify}Decorator".constantize
+      # "#{name.to_s.classify}Decorator".constantize
+      @decorator_class ||= object.decorate.class
     end
 
     def decorate_collection?
@@ -60,7 +62,7 @@ module DecentDecoration
   module ControllerMethods
     def expose_decorated(name, *args, &block)
       options    = args.extract_options!
-      decoration = Decoration.new(name, options)
+      decoration = Decoration.new(name, options, public_send(name))
 
       decorator_class  = decoration.decorator_class
       decorate_method  = decoration.decorate_method
